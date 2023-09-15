@@ -103,7 +103,7 @@ class LinkedList {
 
         // Remove first node 
         if(index == 0){
-            this.head = this.next
+            this.head = this.head.next
         }else {
             // set a temporary value 'Perivios'
             let prev = this.head

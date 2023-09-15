@@ -1,58 +1,72 @@
 class TrieNode {
-    constructor() {
-      this.children = new Map();
-      this.isEndOfWord = false;
-    }
+  constructor(){
+      this.children = {}
+      this.isEndOfWord = false
   }
-  
-  class Trie {
-    constructor() {
-      this.root = new TrieNode();
-    }
-  
-    insert(word) {
-      let node = this.root;
-      for (let char of word) {
-        if (!node.children.has(char)) {
-          node.children.set(char, new TrieNode());
-        }
-        node = node.children.get(char);
-      }
-      node.isEndOfWord = true;
-    }
-  
-    search(word) {
-      let node = this.root;
-      for (let char of word) {
-        if (!node.children.has(char)) {
-          return false;
-        }
-        node = node.children.get(char);
-      }
-      return node.isEndOfWord;
-    }
-  
-    startsWith(prefix) {
-      let node = this.root;
-      for (let char of prefix) {
-        if (!node.children.has(char)) {
-          return false;
-        }
-        node = node.children.get(char);
-      }
-      return true;
-    }
-  }
-  
+}
 
+class Trie {
+  constructor(){
+      this.root = new TrieNode()
+  }
+
+  insert(word){
+      let curr = this.root
+      for(let i = 0; i < word.length; i++){
+          if(!curr.children[word[i]]){
+              curr.children[word[i]] = new TrieNode()
+          }
+
+          curr = curr.children[word[i]]
+      }
+
+      curr.isEndOfWord = true
+  }
+
+  search(word){
+      let curr = this.root
+      for(let i = 0 ; i< word.length; i++){
+          if(!curr.children[word[i]]){
+              return false
+          }
+
+          curr = curr.children[word[i]]
+      }
+
+      return curr.isEndOfWord
+  }
+
+  startWith(word){
+      let curr = this.root
+      for(let i = 0 ; i< word.length; i++){
+          if(!curr.children[word[i]]){
+              return false
+          }
+
+          curr = curr.children[word[i]]
+      }
+
+      return true
+  }
+
+
+  traverse(node = this.root, prefix = '') {
+      if (node.isEndOfWord) {
+        console.log(prefix);
+      }
   
-  const trie = new Trie();
-  trie.insert("apple");
-  trie.insert("banana");
-  trie.insert("cherry");
-  
-  console.log(trie.search("apple")); // true
-  console.log(trie.search("grape")); // false
-  
-  console.log(trie.startsWith("app")); // true
-  console.log(trie.startsWith("grap")); // false
+      for (const key in node.children) {
+        const childNode = node.children[key];
+        const nextPrefix = prefix + key;
+        this.traverse(childNode, nextPrefix);
+      }
+    }
+}
+
+const trie = new Trie()
+trie.insert('Rizin')
+trie.insert('Nav')
+console.log(trie.search('Rizi'))
+console.log(trie.search('Rizin'))
+trie.insert('Rizin M')
+trie.traverse()
